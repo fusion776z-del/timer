@@ -159,6 +159,20 @@ function updateRing(){
  display.style.textShadow =
  `0 0 25px ${glowColor}`;
 
+/* 集中・休憩文字 */
+
+document
+.querySelectorAll(".mode-label")
+.forEach(label=>{
+
+ label.style.color =
+ glowColor;
+
+ label.style.textShadow =
+ `0 0 10px ${glowColor}`;
+
+});
+
  /* ボタン更新 */
 
  updateControlState();
