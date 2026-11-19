@@ -28,6 +28,50 @@ ring.style.strokeDasharray =
 circumference;
 
 ring.style.strokeDashoffset = 0;
+
+function playBeep(freq = 800, duration = 150){
+
+ const audioCtx =
+ new (
+   window.AudioContext ||
+   window.webkitAudioContext
+ )();
+
+ const osc =
+ audioCtx.createOscillator();
+
+ const gain =
+ audioCtx.createGain();
+
+ osc.connect(gain);
+ gain.connect(audioCtx.destination);
+
+ osc.frequency.value =
+ freq;
+
+ osc.type = "sine";
+
+ osc.start();
+
+ gain.gain.setValueAtTime(
+ 0.3,
+ audioCtx.currentTime
+ );
+
+ gain.gain.exponentialRampToValueAtTime(
+ 0.001,
+ audioCtx.currentTime +
+ duration / 1000
+ );
+
+ osc.stop(
+ audioCtx.currentTime +
+ duration / 1000
+ );
+
+}
+
+
 function updateDisplay(){
 
  const m =
@@ -121,27 +165,6 @@ function updateRing(){
 
 }
 
-function updateDots(){
-
- const dots =
- document.querySelectorAll(
- "#sessionDots span"
- );
-
- dots.forEach(dot =>
-   dot.classList.remove("done")
- );
-
- let completed =
- (session - 1) % 4;
-
- for(let i=0;i<completed;i++){
-
-   dots[i].classList.add("done");
-
- }
-
-}
 function switchMode(){
 
  if(isStudy){
@@ -186,7 +209,7 @@ function switchMode(){
 
  }
 
-updateDots();
+
 updateDisplay();
 updateControlState();
 }
@@ -203,11 +226,28 @@ function startTimer(){
 
    updateDisplay();
 
-   if(remaining<=0){
 
-      switchMode();
+if(
+ remaining <= 3 &&
+ remaining > 0
+){
+ playBeep(
+   1000,
+   120
+ );
+}
 
-   }
+if(remaining<=0){
+
+ playBeep(
+   600,
+   500
+ );
+
+ switchMode();
+
+}
+
 
  },1000);
 
