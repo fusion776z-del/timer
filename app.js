@@ -9,6 +9,7 @@ let remaining = FULL_TIME;
 let interval = null;
 let isStudy = true;
 let session = 1;
+let endTime = null;
 
 const display =
 document.getElementById("timerDisplay");
@@ -232,7 +233,14 @@ updateControlState();
 function startTimer(){
 
  if(interval) return;
+endTime =
+ Date.now() +
+ remaining * 1000;
 
+localStorage.setItem(
+ "endTime",
+ endTime
+);
  interval =
  setInterval(()=>{
 
@@ -274,6 +282,10 @@ function pauseTimer(){
  clearInterval(interval);
 
  interval = null;
+
+ localStorage.removeItem(
+  "endTime"
+ );
 
  updateControlState();
 
@@ -432,6 +444,31 @@ function updateControlState(){
 
 updateDisplay();
 updateControlState();
+
+const savedEndTime =
+ localStorage.getItem(
+  "endTime"
+ );
+
+if(savedEndTime){
+
+ endTime =
+ Number(savedEndTime);
+
+ remaining =
+ Math.max(
+ 0,
+  Math.floor(
+   (endTime - Date.now())
+   / 1000
+  )
+ );
+
+ updateDisplay();
+
+ startTimer();
+
+}
 
 function updateRealClock(){
 
