@@ -43,10 +43,16 @@ body{
 }
 
 .mode-card{
- width:120px;
- height:120px;
+
+ width:min(24vw,110px);
+ height:min(24vw,110px);
+
+ min-width:80px;
+ min-height:80px;
+
  border:3px solid var(--blue);
  border-radius:20px;
+
  display:flex;
  flex-direction:column;
  justify-content:center;
@@ -55,8 +61,8 @@ body{
  cursor:pointer;
  position:relative;
  z-index:100;
-}
 
+}
 
 .mode-card.active{
  background:rgba(103,232,249,.15);
@@ -72,11 +78,54 @@ body{
 }
 
 .timer-ring{
- width:320px;
- height:320px;
- margin:30px auto;
- position:relative;
- z-index:1;
+
+ width:min(80vw,320px);
+ height:min(80vw,320px);
+
+ margin:20px auto;
+
+ filter:
+  drop-shadow(0 0 8px #67e8f9);
+
+}
+
+.mode-label{
+
+  margin-top:6px;
+
+  font-weight:bold;
+
+}
+
+.timer-ring{
+
+  filter:
+    drop-shadow(0 0 8px #67e8f9);
+
+}
+
+@media (max-width:400px){
+
+ .page{
+   padding:10px;
+ }
+
+ .mode-area{
+   gap:10px;
+ }
+
+ .controls{
+   gap:12px;
+ }
+
+ .controls button{
+
+   width:60px;
+   height:60px;
+
+   font-size:24px;
+ }
+
 }
 
 .timer-ring svg{
@@ -142,7 +191,7 @@ body{
 
  color:#67e8f9;
 
- font-size:28px;
+ font-size:clamp(22px,7vw,32px);
 
  font-weight:bold;
 
@@ -152,7 +201,7 @@ body{
 }
 
 #timerDisplay{
- font-size:54px;
+ font-size:clamp(38px,12vw,54px);
  font-weight:bold;
 }
 
@@ -310,16 +359,15 @@ textarea{
 }
 .mode-icon{
 
-  width:80px;
-  height:80px;
+ width:min(18vw,80px);
+ height:min(18vw,80px);
 
-  object-fit:contain;
-pointer-events:none;
-  filter:
-    drop-shadow(0 0 6px #67e8f9)
-    drop-shadow(0 0 12px #67e8f9);
+ object-fit:contain;
+ pointer-events:none;
 
 }
+
+
 .mode-label{
 
   margin-top:6px;
@@ -328,9 +376,32 @@ pointer-events:none;
 
 }
 
-.timer-ring{
-  filter:
-    drop-shadow(0 0 8px #67e8f9);
+@media (max-width:400px){
+
+ .page{
+   padding:10px;
+ }
+
+ .mode-area{
+   gap:10px;
+ }
+
+ .controls{
+   gap:12px;
+ }
+
+ .controls button{
+
+   width:60px;
+   height:60px;
+
+   font-size:24px;
+ }
+
+ .focus-label{
+   font-size:20px;
+ }
+
 }
 
 </style>
