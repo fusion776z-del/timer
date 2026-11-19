@@ -229,26 +229,23 @@ function resetTimer(){
 
  pauseTimer();
 
- isStudy = true;
- session = 1;
+ if(isStudy){
 
- totalTime = FULL_TIME;
- remaining = FULL_TIME;
+   totalTime = FULL_TIME;
+   remaining = FULL_TIME;
 
- modeLabel.textContent = "集中";
+ }else{
 
- document
- .getElementById("studyCard")
- .classList.add("active");
+   totalTime = BREAK_TIME;
+   remaining = BREAK_TIME;
 
- document
- .getElementById("breakCard")
- .classList.remove("active");
+ }
 
-updateDots();
-updateDisplay();
-updateControlState();
+ updateDisplay();
+ updateControlState();
+
 }
+
 
 document
 .getElementById("startBtn")
@@ -381,3 +378,54 @@ function updateControlState(){
 
 updateDisplay();
 updateControlState();
+
+function updateRealClock(){
+
+ const now = new Date();
+
+ const y =
+ now.getFullYear();
+
+ const m =
+ String(
+ now.getMonth() + 1
+ ).padStart(2,"0");
+
+ const d =
+ String(
+ now.getDate()
+ ).padStart(2,"0");
+
+ const h =
+ String(
+ now.getHours()
+ ).padStart(2,"0");
+
+ const min =
+ String(
+ now.getMinutes()
+ ).padStart(2,"0");
+
+ const sec =
+ String(
+ now.getSeconds()
+ ).padStart(2,"0");
+
+ document
+ .getElementById("realDate")
+ .textContent =
+ `${y}.${m}.${d}`;
+
+ document
+ .getElementById("realTime")
+ .textContent =
+ `${h}:${min}:${sec}`;
+
+}
+
+updateRealClock();
+
+setInterval(
+ updateRealClock,
+ 1000
+);

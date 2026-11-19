@@ -116,6 +116,41 @@ body{
  margin-bottom:10px;
 }
 
+#realClock{
+
+ text-align:center;
+
+ margin-top:20px;
+ margin-bottom:10px;
+
+}
+
+#realDate{
+
+ color:#67e8f9;
+
+ font-size:16px;
+
+ letter-spacing:2px;
+
+ text-shadow:
+ 0 0 8px #67e8f9;
+
+}
+
+#realTime{
+
+ color:#67e8f9;
+
+ font-size:28px;
+
+ font-weight:bold;
+
+ text-shadow:
+ 0 0 12px #67e8f9;
+
+}
+
 #timerDisplay{
  font-size:54px;
  font-weight:bold;
@@ -305,6 +340,14 @@ pointer-events:none;
 
 <div class="page">
 
+<div id="realClock">
+
+  <div id="realDate"></div>
+
+  <div id="realTime"></div>
+
+</div>
+
 <div class="mode-area">
 
 <div class="mode-card active" id="studyCard">
@@ -336,6 +379,8 @@ pointer-events:none;
 
 </div>
 </div>
+
+
 <div class="timer-ring">
 
 <svg viewBox="0 0 300 300">
