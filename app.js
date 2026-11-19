@@ -227,10 +227,15 @@ function switchMode(){
 
 updateDisplay();
 updateControlState();
+
 localStorage.setItem(
  "isStudy",
  String(isStudy)
 );
+
+pauseTimer();
+
+startTimer();
 }
 
 
