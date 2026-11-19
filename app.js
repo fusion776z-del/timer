@@ -520,3 +520,31 @@ setInterval(
  updateRealClock,
  1000
 );
+
+document.addEventListener(
+ "visibilitychange",
+ ()=>{
+
+  if(
+   document.visibilityState
+   === "visible"
+   &&
+   endTime
+  ){
+
+   remaining =
+   Math.max(
+    0,
+    Math.floor(
+     (endTime - Date.now())
+     / 1000
+    )
+   );
+
+   updateDisplay();
+
+  }
+
+ }
+);
+
