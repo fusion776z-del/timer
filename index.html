@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>Study Focus</title>
+
+<style>
+
+:root{
+ --bg:#0b1020;
+ --card:#171d2e;
+ --blue:#67e8f9;
+ --text:#ffffff;
+ --sub:#8f9bb3;
+}
+
+*{
+ margin:0;
+ padding:0;
+ box-sizing:border-box;
+}
+
+body{
+ background:var(--bg);
+ color:var(--text);
+ font-family:sans-serif;
+ min-height:100vh;
+ padding-bottom:80px;
+}
+
+.page{
+ padding:20px;
+}
+
+.mode-area{
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ gap:20px;
+ margin-top:20px;
+}
+
+.mode-card{
+ width:120px;
+ height:120px;
+ border:3px solid var(--blue);
+ border-radius:20px;
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+ align-items:center;
+
+ cursor:pointer;
+ position:relative;
+ z-index:100;
+}
+
+
+.mode-card.active{
+ background:rgba(103,232,249,.15);
+}
+
+.mode-title{
+ font-size:24px;
+}
+
+.mode-time{
+ margin-top:10px;
+ font-size:20px;
+}
+
+.timer-ring{
+ width:320px;
+ height:320px;
+ margin:30px auto;
+ position:relative;
+ z-index:1;
+}
+
+.timer-ring svg{
+ width:100%;
+ height:100%;
+}
+
+.bg-ring{
+ fill:none;
+ stroke:#27324a;
+ stroke-width:16;
+}
+
+.progress-ring{
+  fill:none;
+  stroke:#67e8f9;
+  stroke-width:16;
+  stroke-linecap:round;
+
+  transform: rotate(-90deg);
+  transform-origin: center;
+
+  transition: stroke-dashoffset 1s linear;
+}
+
+.timer-center{
+ position:absolute;
+ inset:0;
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+ align-items:center;
+}
+
+.focus-label{
+ font-size:24px;
+ margin-bottom:10px;
+}
+
+#timerDisplay{
+ font-size:54px;
+ font-weight:bold;
+}
+
+.session-dots{
+ display:flex;
+ justify-content:center;
+ gap:10px;
+ margin-top:15px;
+}
+
+.session-dots span{
+ width:12px;
+ height:12px;
+ border-radius:50%;
+ background:#39445f;
+}
+
+.session-dots span.done{
+ background:var(--blue);
+}
+
+.controls{
+ display:flex;
+ justify-content:center;
+ gap:10px;
+ margin-top:20px;
+}
+
+.controls{
+
+ display:flex;
+ justify-content:center;
+ gap:20px;
+ margin-top:20px;
+
+}
+
+.controls button{
+
+ width:70px;
+ height:70px;
+
+ border:none;
+ border-radius:20px;
+
+ background:#171d2e;
+
+ color:#67e8f9;
+
+ font-size:28px;
+
+ cursor:pointer;
+
+ transition:.25s;
+
+ box-shadow:
+   0 0 10px rgba(103,232,249,.15),
+   inset 0 0 15px rgba(103,232,249,.05);
+
+}
+
+/* 開始ボタン */
+
+
+
+/* ホバー・タップ */
+
+.controls button:hover{
+
+ transform:translateY(-3px);
+
+}
+
+.controls button.active{
+
+ background:#67e8f9;
+
+ color:#08111f;
+
+ box-shadow:
+   0 0 10px #67e8f9,
+   0 0 20px #67e8f9,
+   0 0 30px rgba(103,232,249,.5);
+
+}
+
+.controls button:active{
+
+ transform:scale(.95);
+
+}
+
+.save-card{
+ background:var(--card);
+ margin-top:25px;
+ padding:15px;
+ border-radius:16px;
+}
+
+select,
+textarea{
+ width:100%;
+ margin-top:10px;
+ padding:12px;
+ border-radius:10px;
+ border:none;
+ background:#242d45;
+ color:white;
+}
+
+textarea{
+ height:80px;
+ resize:none;
+}
+
+#saveBtn{
+ width:100%;
+ margin-top:10px;
+ padding:14px;
+ background:var(--blue);
+ color:black;
+ font-weight:bold;
+ border:none;
+ border-radius:12px;
+}
+
+.bottom-nav{
+ position:fixed;
+ bottom:0;
+ left:0;
+ width:100%;
+ height:65px;
+ background:#111827;
+ border-top:1px solid #222;
+ display:flex;
+}
+
+.bottom-nav button{
+ flex:1;
+ background:none;
+ border:none;
+ color:white;
+ font-size:22px;
+}
+
+#records{
+ margin-top:15px;
+}
+
+.record{
+ background:#171d2e;
+ padding:10px;
+ border-radius:10px;
+ margin-bottom:8px;
+}
+.mode-icon{
+
+  width:80px;
+  height:80px;
+
+  object-fit:contain;
+pointer-events:none;
+  filter:
+    drop-shadow(0 0 6px #67e8f9)
+    drop-shadow(0 0 12px #67e8f9);
+
+}
+.mode-label{
+
+  margin-top:6px;
+
+  font-weight:bold;
+
+}
+
+.timer-ring{
+  filter:
+    drop-shadow(0 0 8px #67e8f9);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+<div class="mode-area">
+
+<div class="mode-card active" id="studyCard">
+
+  <img
+    src="focus.png"
+    class="mode-icon"
+    alt="集中"
+  >
+
+  <div class="mode-label">
+    集中
+  </div>
+
+
+</div>
+
+<div class="mode-card" id="breakCard">
+
+  <img
+    src="break.png"
+    class="mode-icon"
+    alt="休憩"
+  >
+
+  <div class="mode-label">
+    休憩
+  </div>
+
+</div>
+</div>
+<div class="timer-ring">
+
+<svg viewBox="0 0 300 300">
+
+<circle
+class="bg-ring"
+cx="150"
+cy="150"
+r="120">
+</circle>
+
+<circle
+id="progressRing"
+class="progress-ring"
+cx="150"
+cy="150"
+r="120">
+</circle>
+
+</svg>
+
+<div class="timer-center">
+
+<div class="focus-label" id="modeLabel">
+集中
+</div>
+
+<div id="timerDisplay">
+25:00
+</div>
+
+</div>
+
+</div>
+
+<div class="session-dots" id="sessionDots">
+<span class="done"></span>
+<span></span>
+<span></span>
+<span></span>
+</div>
+
+<div class="controls">
+
+<button id="startBtn">▶</button>
+
+<button id="pauseBtn">❚❚</button>
+
+<button id="resetBtn">↻</button>
+
+</div>
+
+
+<script src="app.js"></script>
+
+</body>
+</html>
