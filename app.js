@@ -340,9 +340,14 @@ document
 .getElementById("studyCard")
 .addEventListener("click",()=>{
 
- pauseTimer();
+pauseTimer();
 
- isStudy = true;
+isStudy = true;
+
+localStorage.setItem(
+ "isStudy",
+ true
+);
 
  totalTime = FULL_TIME;
  remaining = FULL_TIME;
@@ -369,6 +374,11 @@ document
  pauseTimer();
 
  isStudy = false;
+
+localStorage.setItem(
+ "isStudy",
+ false
+);
 
  totalTime = BREAK_TIME;
  remaining = BREAK_TIME;
@@ -444,6 +454,48 @@ function updateControlState(){
 
 updateDisplay();
 updateControlState();
+
+localStorage.setItem(
+ "isStudy",
+ isStudy
+);
+
+const savedMode =
+ localStorage.getItem(
+  "isStudy"
+ );
+
+if(savedMode !== null){
+
+ isStudy =
+ savedMode === "true";
+
+ if(isStudy){
+
+   totalTime = FULL_TIME;
+
+   modeLabel.textContent =
+   "集中";
+
+ }else{
+
+   totalTime = BREAK_TIME;
+
+   modeLabel.textContent =
+   "休憩";
+
+   document
+   .getElementById("studyCard")
+   .classList.remove("active");
+
+   document
+   .getElementById("breakCard")
+   .classList.add("active");
+
+ }
+
+}
+
 
 const savedEndTime =
  localStorage.getItem(
