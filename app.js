@@ -227,6 +227,10 @@ function switchMode(){
 
 updateDisplay();
 updateControlState();
+localStorage.setItem(
+ "isStudy",
+ String(isStudy)
+);
 }
 
 
@@ -346,7 +350,7 @@ isStudy = true;
 
 localStorage.setItem(
  "isStudy",
- true
+ "true"
 );
 
  totalTime = FULL_TIME;
@@ -377,7 +381,7 @@ document
 
 localStorage.setItem(
  "isStudy",
- false
+ "false"
 );
 
  totalTime = BREAK_TIME;
@@ -455,10 +459,6 @@ function updateControlState(){
 updateDisplay();
 updateControlState();
 
-localStorage.setItem(
- "isStudy",
- isStudy
-);
 
 const savedMode =
  localStorage.getItem(
@@ -477,7 +477,15 @@ if(savedMode !== null){
    modeLabel.textContent =
    "集中";
 
- }else{
+   document
+   .getElementById("studyCard")
+   .classList.add("active");
+
+   document
+   .getElementById("breakCard")
+   .classList.remove("active");
+
+}else{
 
    totalTime = BREAK_TIME;
 
@@ -518,7 +526,38 @@ if(savedEndTime){
 
  updateDisplay();
 
- startTimer();
+ interval =
+ setInterval(()=>{
+
+  remaining =
+  Math.max(
+   0,
+   Math.floor(
+    (endTime - Date.now())
+    / 1000
+   )
+  );
+
+  updateDisplay();
+
+  if(remaining <= 0){
+
+   clearInterval(interval);
+
+   interval = null;
+
+   playBeep(
+    600,
+    500
+   );
+
+   switchMode();
+
+  }
+
+ },1000);
+
+ updateControlState();
 
 }
 
