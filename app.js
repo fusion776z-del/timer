@@ -9,7 +9,7 @@ countdownSound.preload = "auto";
 
 let totalTime = FULL_TIME;
 let remaining = FULL_TIME;
-
+let countdownPlayed = false;
 let interval = null;
 let isStudy = true;
 let session = 1;
@@ -303,6 +303,7 @@ startTimer();
 function startTimer(){
 
  if(interval) return;
+countdownPlayed = false;
 endTime =
  Date.now() +
  remaining * 1000;
@@ -318,17 +319,20 @@ localStorage.setItem(
 
    updateDisplay();
 
-if(remaining === 3)
-{
+if(
+ remaining <= 3 &&
+ remaining > 0 &&
+ !countdownPlayed
+){
 
-console.log(
- "countdown sound"
-);
+ countdownPlayed = true;
 
  countdownSound.currentTime = 0;
 
  countdownSound.play()
- .catch(()=>{});
+ .catch(err=>{
+  console.log(err);
+ });
 
 }
 
@@ -386,22 +390,7 @@ document
 .getElementById("startBtn")
 .addEventListener(
  "click",
- ()=>{
-
-  countdownSound.currentTime = 0;
-
-  countdownSound.play()
-  .then(()=>{
-   countdownSound.pause();
-   countdownSound.currentTime = 0;
-  })
-  .catch(err=>{
-   console.log(err);
-  });
-
-  startTimer();
-
- }
+ startTimer
 );
 
 document
