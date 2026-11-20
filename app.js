@@ -250,10 +250,17 @@ localStorage.setItem(
  "endTime",
  endTime
 );
- interval =
+interval =
  setInterval(()=>{
 
-   remaining--;
+   remaining =
+   Math.max(
+    0,
+    Math.floor(
+     (endTime - Date.now())
+     / 1000
+    )
+   );
 
    updateDisplay();
 
@@ -295,6 +302,8 @@ function pauseTimer(){
  localStorage.removeItem(
   "endTime"
  );
+
+ endTime = null;
 
  updateControlState();
 
@@ -621,12 +630,16 @@ document.addEventListener(
  "visibilitychange",
  ()=>{
 
-  if(
-   document.visibilityState
-   === "visible"
-   &&
-   endTime
-  ){
+if(
+ document.visibilityState
+ === "visible"
+ &&
+ interval
+ &&
+ endTime
+)
+
+{
 
    remaining =
    Math.max(
