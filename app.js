@@ -2,6 +2,10 @@
 
 const FULL_TIME = 25 * 60;
 const BREAK_TIME = 5 * 60;
+const countdownSound =
+ new Audio("countdown.mp3");
+
+countdownSound.preload = "auto";
 
 let totalTime = FULL_TIME;
 let remaining = FULL_TIME;
@@ -250,37 +254,24 @@ localStorage.setItem(
  "endTime",
  endTime
 );
-interval =
+ interval =
  setInterval(()=>{
 
-   remaining =
-   Math.max(
-    0,
-    Math.floor(
-     (endTime - Date.now())
-     / 1000
-    )
-   );
+   remaining--;
 
    updateDisplay();
 
+if(remaining === 3){
 
-if(
- remaining <= 3 &&
- remaining > 0
-){
- playBeep(
-   1000,
-   120
- );
+ countdownSound.currentTime = 0;
+
+ countdownSound.play()
+ .catch(()=>{});
+
 }
 
 if(remaining<=0){
 
- playBeep(
-   600,
-   500
- );
 
  switchMode();
 
@@ -302,8 +293,6 @@ function pauseTimer(){
  localStorage.removeItem(
   "endTime"
  );
-
- endTime = null;
 
  updateControlState();
 
@@ -560,10 +549,6 @@ if(savedEndTime){
 
    interval = null;
 
-   playBeep(
-    600,
-    500
-   );
 
    switchMode();
 
@@ -630,16 +615,12 @@ document.addEventListener(
  "visibilitychange",
  ()=>{
 
-if(
- document.visibilityState
- === "visible"
- &&
- interval
- &&
- endTime
-)
-
-{
+  if(
+   document.visibilityState
+   === "visible"
+   &&
+   endTime
+  ){
 
    remaining =
    Math.max(
