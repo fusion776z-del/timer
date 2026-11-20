@@ -127,16 +127,44 @@ function updateRing(){
  /* カード */
 
  document
- .querySelectorAll(".mode-card")
- .forEach(card=>{
+.querySelectorAll(".mode-card")
+.forEach(card=>{
 
-   card.style.border =
-   `3px solid ${glowColor}`;
+ if(card.classList.contains("active")){
 
-   card.style.boxShadow =
-   `0 0 15px ${glowColor}`;
+  card.style.border =
+  `3px solid ${glowColor}`;
 
- });
+card.style.boxShadow =
+`
+0 0 15px ${glowColor},
+0 0 30px ${glowColor},
+0 0 60px ${glowColor},
+inset 0 0 30px ${glowColor}
+`;
+
+  card.style.background =
+  "rgba(103,232,249,.15)";
+
+  card.style.opacity = "1";
+
+ }else{
+
+  card.style.border =
+  "#27324a";
+
+  card.style.boxShadow =
+  "none";
+
+  card.style.background =
+  "transparent";
+
+  card.style.opacity = "0.45";
+
+ }
+
+});
+
 
  /* アイコン */
 
@@ -167,14 +195,43 @@ function updateRing(){
 /* 集中・休憩文字 */
 
 document
-.querySelectorAll(".mode-label")
-.forEach(label=>{
+.querySelectorAll(".mode-card")
+.forEach(card=>{
 
- label.style.color =
- glowColor;
+ const icon =
+ card.querySelector(".mode-icon");
 
- label.style.textShadow =
- `0 0 10px ${glowColor}`;
+ const label =
+ card.querySelector(".mode-label");
+
+ if(card.classList.contains("active")){
+
+  icon.style.filter =
+  `drop-shadow(0 0 8px ${glowColor})
+   drop-shadow(0 0 20px ${glowColor})`;
+
+  label.style.color =
+  glowColor;
+
+  label.style.textShadow =
+  `
+  0 0 10px ${glowColor},
+  0 0 20px ${glowColor},
+  0 0 40px ${glowColor}
+  `;
+
+ }else{
+
+  icon.style.filter =
+  "none";
+
+  label.style.color =
+  "#4b5563";
+
+  label.style.textShadow =
+  "none";
+
+ }
 
 });
 
@@ -261,7 +318,12 @@ localStorage.setItem(
 
    updateDisplay();
 
-if(remaining === 3){
+if(remaining === 3)
+{
+
+console.log(
+ "countdown sound"
+);
 
  countdownSound.currentTime = 0;
 
@@ -323,8 +385,23 @@ function resetTimer(){
 document
 .getElementById("startBtn")
 .addEventListener(
-"click",
-startTimer
+ "click",
+ ()=>{
+
+  countdownSound.currentTime = 0;
+
+  countdownSound.play()
+  .then(()=>{
+   countdownSound.pause();
+   countdownSound.currentTime = 0;
+  })
+  .catch(err=>{
+   console.log(err);
+  });
+
+  startTimer();
+
+ }
 );
 
 document
