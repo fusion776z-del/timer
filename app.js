@@ -1,19 +1,15 @@
 
-
 const FULL_TIME = 25 * 60;
 const BREAK_TIME = 5 * 60;
-const countdownSound =
- new Audio("countdown.mp3");
-
-countdownSound.preload = "auto";
 
 let totalTime = FULL_TIME;
 let remaining = FULL_TIME;
-let countdownPlayed = false;
+
 let interval = null;
 let isStudy = true;
 let session = 1;
 let endTime = null;
+let audioCtx = null;
 
 const display =
 document.getElementById("timerDisplay");
@@ -34,13 +30,21 @@ circumference;
 
 ring.style.strokeDashoffset = 0;
 
-function playBeep(freq = 800, duration = 150){
+function playBeep(
+ freq = 800,
+ duration = 150
+){
 
- const audioCtx =
- new (
-   window.AudioContext ||
-   window.webkitAudioContext
- )();
+ if(!audioCtx){
+  return;
+ }
+
+ if(
+  audioCtx.state ===
+  "suspended"
+ ){
+  audioCtx.resume();
+ }
 
  const osc =
  audioCtx.createOscillator();
@@ -49,31 +53,34 @@ function playBeep(freq = 800, duration = 150){
  audioCtx.createGain();
 
  osc.connect(gain);
- gain.connect(audioCtx.destination);
+
+ gain.connect(
+  audioCtx.destination
+ );
 
  osc.frequency.value =
  freq;
 
  osc.type = "sine";
 
- osc.start();
-
  gain.gain.setValueAtTime(
- 0.3,
+ 0.8,
  audioCtx.currentTime
  );
 
- gain.gain.exponentialRampToValueAtTime(
+ gain.gain
+ .exponentialRampToValueAtTime(
  0.001,
- audioCtx.currentTime +
- duration / 1000
+  audioCtx.currentTime +
+  duration / 1000
  );
+
+ osc.start();
 
  osc.stop(
- audioCtx.currentTime +
- duration / 1000
+  audioCtx.currentTime +
+  duration / 1000
  );
-
 }
 
 
@@ -303,8 +310,9 @@ startTimer();
 function startTimer(){
 
  if(interval) return;
-countdownPlayed = false;
-endTime =
+
+
+ endTime =
  Date.now() +
  remaining * 1000;
 
@@ -316,25 +324,24 @@ localStorage.setItem(
  setInterval(()=>{
 
    remaining--;
+if(remaining === 3){
+ playBeep(800,200);
+}
+
+if(remaining === 2){
+ playBeep(800,200);
+}
+
+if(remaining === 1){
+ playBeep(800,200);
+}
+
+if(remaining === 0){
+ playBeep(1400,800);
+}
 
    updateDisplay();
 
-if(
- remaining <= 3 &&
- remaining > 0 &&
- !countdownPlayed
-){
-
- countdownPlayed = true;
-
- countdownSound.currentTime = 0;
-
- countdownSound.play()
- .catch(err=>{
-  console.log(err);
- });
-
-}
 
 if(remaining<=0){
 
@@ -356,6 +363,7 @@ function pauseTimer(){
 
  interval = null;
 
+ 
  localStorage.removeItem(
   "endTime"
  );
@@ -390,7 +398,23 @@ document
 .getElementById("startBtn")
 .addEventListener(
  "click",
- startTimer
+ ()=>{
+
+  if(!audioCtx){
+
+   audioCtx =
+   new (
+    window.AudioContext ||
+    window.webkitAudioContext
+   )();
+
+  }
+
+  audioCtx.resume();
+
+  startTimer();
+
+ }
 );
 
 document
