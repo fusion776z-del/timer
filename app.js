@@ -61,10 +61,10 @@ function playBeep(
  osc.frequency.value =
  freq;
 
- osc.type = "sine";
+ osc.type = "square";
 
  gain.gain.setValueAtTime(
- 0.8,
+ 1.0,
  audioCtx.currentTime
  );
 
@@ -325,19 +325,19 @@ localStorage.setItem(
 
    remaining--;
 if(remaining === 3){
- playBeep(800,200);
+ playBeep(1800,150);
 }
 
 if(remaining === 2){
- playBeep(800,200);
+ playBeep(1800,150);
 }
 
 if(remaining === 1){
- playBeep(800,200);
+ playBeep(1800,150);
 }
 
 if(remaining === 0){
- playBeep(1400,800);
+ playBeep(2400,1200);
 }
 
    updateDisplay();
