@@ -29,7 +29,64 @@ body{
  min-height:100vh;
  padding-bottom:80px;
 }
+.frame-wrap{
+  position:relative;
+  width:100%;
+  min-height:100vh;
+}
 
+.ornament-frame{
+
+  position:fixed;
+
+  inset:0;
+
+  width:100vw;
+  height:100vh;
+
+  object-fit:cover;
+
+  pointer-events:none;
+
+  z-index:1;
+
+  opacity:.95;
+
+  filter:
+    drop-shadow(0 0 10px #67e8f9)
+    drop-shadow(0 0 30px #67e8f9);
+
+}
+.ornament-frame{
+
+ position:fixed;
+ inset:0;
+
+ width:100vw;
+ height:100vh;
+
+ object-fit:cover;
+
+ pointer-events:none;
+
+ z-index:1;
+
+ filter:
+ drop-shadow(0 0 10px #67e8f9)
+ drop-shadow(0 0 25px #67e8f9)
+ drop-shadow(0 0 50px #67e8f9);
+
+}
+
+
+
+.page{
+
+  position:relative;
+
+  z-index:10;
+
+}
 .page{
  padding:20px;
 }
@@ -43,27 +100,33 @@ body{
 }
 
 .mode-card{
+  width:min(26vw,120px);
+  height:min(26vw,120px);
+  min-width:80px;
+  min-height:80px;
 
- width:min(26vw,120px);
- height:min(26vw,120px);
+  border:2px solid rgba(255,255,255,.15);
+  border-radius:20px;
 
- min-width:80px;
- min-height:80px;
+  background:rgba(255,255,255,.03);
 
- border:3px solid var(--blue);
- border-radius:20px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
 
- display:flex;
- flex-direction:column;
- justify-content:center;
- align-items:center;
-
- cursor:pointer;
- position:relative;
- z-index:100;
-
+  cursor:pointer;
+  position:relative;
+  z-index:100;
 }
-
+.mode-card::before{
+  content:"";
+  position:absolute;
+  inset:-4px;
+  border-radius:24px;
+  border:2px solid rgba(255,255,255,.25);
+  pointer-events:none;
+}
 .mode-card.active{
  background:rgba(103,232,249,.25);
 
@@ -368,7 +431,7 @@ textarea{
  width:min(18vw,80px);
  height:min(18vw,80px);
 
- object-fit:contain;
+ object-fit:cover;
 
  pointer-events:none;
 
@@ -420,7 +483,17 @@ textarea{
 
 <body>
 
-<div class="page">
+<body>
+
+<div class="frame-wrap">
+
+  <img
+    src="flame.png"
+    class="ornament-frame"
+    alt=""
+  >
+
+  <div class="page">
 
 <div id="realClock">
 
@@ -507,8 +580,9 @@ r="120">
 
 <button id="resetBtn">↻</button>
 
-</div>
+  </div>
 
+</div>
 
 <script src="app.js"></script>
 

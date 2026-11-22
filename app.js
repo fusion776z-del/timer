@@ -1,6 +1,6 @@
 
-const FULL_TIME = 25 * 60;
-const BREAK_TIME = 5 * 60;
+const FULL_TIME = 25*60;
+const BREAK_TIME = 5*60;
 
 let totalTime = FULL_TIME;
 let remaining = FULL_TIME;
@@ -169,7 +169,27 @@ inset 0 0 30px ${glowColor}
   card.style.opacity = "0.45";
 
  }
+const frame =
+document.querySelector(
+ ".ornament-frame"
+);
 
+if(frame){
+
+ frame.style.filter =
+ `
+ drop-shadow(
+  0 0 10px ${glowColor}
+ )
+ drop-shadow(
+  0 0 30px ${glowColor}
+ )
+ drop-shadow(
+  0 0 60px ${glowColor}
+ )
+ `;
+
+}
 });
 
 
