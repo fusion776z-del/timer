@@ -702,10 +702,20 @@ function updateRealClock(){
  now.getSeconds()
  ).padStart(2,"0");
 
- document
- .getElementById("realDate")
- .textContent =
- `${y}.${m}.${d}`;
+const week = [
+ "SUN",
+ "MON",
+ "TUE",
+ "WED",
+ "THU",
+ "FRI",
+ "SAT"
+];
+
+document
+.getElementById("realDate")
+.textContent =
+`${y}.${m}.${d}.${week[now.getDay()]}`;
 
  document
  .getElementById("realTime")
